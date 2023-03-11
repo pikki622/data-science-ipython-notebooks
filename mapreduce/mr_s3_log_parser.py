@@ -76,10 +76,8 @@ class MrS3LogParser(MRJob):
         try:
             date_struct = time.strptime(date_parsed, "%d/%b/%Y")
             converted_date = time.strftime("%Y-%m-%d", date_struct)
-            date_time = converted_date + " " + time_parsed
+            date_time = f"{converted_date} {time_parsed}"
 
-        # Throws a ValueError exception if the operation fails that is
-        # caught by the calling function and is handled appropriately
         except ValueError as error:
             raise ValueError(error)
         else:
@@ -100,19 +98,16 @@ class MrS3LogParser(MRJob):
 
                 if n == self.S3_LOG_DATE_TIME:
                     date, date_time, time_zone_parsed = \
-                        self.clean_date_time_zone(group)
+                            self.clean_date_time_zone(group)
                     # Leave the following line of code if 
                     # you want to aggregate by date
-                    date_time = date + " 00:00:00"
+                    date_time = f"{date} 00:00:00"
                 elif n == self.S3_LOG_REQUESTER_ID:
                     requester = group
                 elif n == self.S3_LOG_USER_AGENT:
                     user_agent = group
                 elif n == self.S3_LOG_OPERATION:
                     operation = group
-                else:
-                    pass
-
         except Exception:
             yield (("Error while parsing line: %s", line), 1)
         else:

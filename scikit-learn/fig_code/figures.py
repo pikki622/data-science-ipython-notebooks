@@ -186,12 +186,12 @@ def plot_image_components(x, coefficients=None, mean=0, components=None,
                           imshape=(8, 8), n_components=6, fontsize=12):
     if coefficients is None:
         coefficients = x
-        
+
     if components is None:
         components = np.eye(len(coefficients), len(x))
-        
+
     mean = np.zeros_like(x) + mean
-        
+
 
     fig = plt.figure(figsize=(1.2 * (5 + n_components), 1.2 * 2))
     g = plt.GridSpec(2, 5 + n_components, hspace=0.3)
@@ -208,7 +208,7 @@ def plot_image_components(x, coefficients=None, mean=0, components=None,
     show(0, 2, np.zeros_like(x) + mean, r'$\mu$')
     show(1, 2, approx, r'$1 \cdot \mu$')
 
-    for i in range(0, n_components):
+    for i in range(n_components):
         approx = approx + coefficients[i] * components[i]
         show(0, i + 3, components[i], r'$c_{0}$'.format(i + 1))
         show(1, i + 3, approx,
